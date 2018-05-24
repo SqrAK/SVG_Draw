@@ -1,0 +1,61 @@
+.property-tool {
+    width: 100%;
+    padding: 5px 0 5px 50px;
+    min-height: 40px;
+    /*flex-basis: 40px;*/
+    background: #666666;
+    box-sizing: border-box;
+    border-top: 2px solid #000000;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: center;
+
+}
+
+.property-tool__item {
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 1px dashed gray;
+    display: none;
+}
+
+.property-tool__item:last-child {
+    border: none;
+}
+
+.size-property__number {
+    width: 40px;
+}
+
+.stroke-property__range {
+    width: 90px;
+}
+
+.rotate-property_number {
+    width: 50px;
+}
+
+
+/*свойства stroke*/
+.stroke-property__number {
+    width: 40px;
+    margin-right: 10px;
+}
+
+.fill-property{
+    flex-direction: row;
+}
+
+.fill-property__color, .stroke-color-property__color {
+    width: 32px;
+    height: 20px;
+}
+.stroke-color-property__title, .fill-property__title{
+    cursor: pointer;
+}
+
+.stroke-color-property__title:hover, .fill-property__title:hover{
+    text-decoration: underline;
+}

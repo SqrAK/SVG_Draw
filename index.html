@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EQ</title>
+    <link rel="stylesheet" href="css/reset.css">
+
+
+    <link rel="stylesheet" href="css/libs/colorpicker/colorpicker.css">
+    <link rel="stylesheet" href="css/libs/colorpicker/layout.css">
+    <link rel="stylesheet" href="css/libs/svg.select.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main-menu.css">
+    <link rel="stylesheet" href="css/property-tool.css">
+
+    <link rel="stylesheet" href="css/template.css">
+
+    <script src="js/libs/svg.js"></script>
+    <script src="js/libs/svg.select.js"></script>
+    <script src="js/libs/svg.resize.js"></script>
+    <script src="js/libs/svg.draggable.min.js"></script>
+    <script src="js/libs/svg.panzoom.min.js"></script>
+
+    <script src="js/libs/StackBlur.js"></script>
+    <script src="js/libs/rgbcolor.js"></script>
+    <script src="js/libs/canvg.js"></script>
+    <script src="js/libs/FileSaver.js"></script>
+
+
+    <script src="js/libs/jquery-3.3.1.min.js"></script>
+    <script src="js/libs/colorpicker/colorpicker.js"></script>
+    <script src="js/libs/colorpicker/eye.js"></script>
+    <script src="js/libs/colorpicker/utils.js"></script>
+    <script src="js/libs/colorpicker/layout.js"></script>
+</head>
+<body onload="init();" oncontextmenu="return false" oncopy="return false;" oncontextmenu="return false"
+      onselectstart="return false;">
+<div class="wrapper">
+    <div class="menu-strip">
+        <div class="icon"></div>
+        <ul class="main-menu-list">
+            <li class="main-menu-list__item">
+                <a>Файл</a>
+                <ul class="nested-menu">
+
+                    <li class="nested-menu__item" onclick="saveSvgToPng()"><a>Сохранить</a></li>
+                    <li class="nested-menu__item" onclick="sendToServ()"><a><nobr>Высчитать материал</nobr></a></li>
+                    <li class="nested-menu__item" onclick="bargello()"><a>
+                        <nobr>Баржелло</nobr>
+                    </a></li>
+                </ul>
+            </li>
+            <li class="main-menu-list__item">
+                <a>Правка</a>
+                <ul class= "nested-menu">
+                    <li class="nested-menu__item undo"><a>
+                        <nobr>Шаг назад</nobr>
+                    </a></li>
+                    <li class="nested-menu__item redo"><a>
+                        <nobr>Шаг вперед</nobr>
+                    </a></li>
+                    <li class="nested-menu__item" onclick="copyElement()"><a>
+                        <nobr>Копировать</nobr>
+                    </a></li>
+                    <li class="nested-menu__item" onclick="pasteElement()"><a>
+                        <nobr>Вставить</nobr>
+                    </a></li>
+                    <li class="nested-menu__item" onclick="deleteFigure()"><a>
+                        <nobr>Удалить</nobr>
+                    </a></li>
+                    <li class="nested-menu__item" onclick="cutFigure()"><a>
+                        <nobr>Вырезать</nobr>
+                    </a></li>
+                </ul>
+            </li>
+            <li class="main-menu-list__item" onclick="document.getElementById('parent_popup_click1').style.display='block';"><a>Справка</a></li>
+        </ul>
+    </div>
+    <div class="property-tool">
+        <div class="stroke-property property-tool__item">
+            <span>ширина</span>
+            <input type="number" class="stroke-property__number stroke-width-num" min="0" value="1">
+            <input type="range" class="stroke-property__range stroke-width-ran " min="0" value="1">
+
+        </div>
+
+        <div class="fill-property property-tool__item fill-property_active">
+            <span class="fill-property__title">заливка</span>
+            <div id="colorSelector" class="color-selector colorPickerSelector fill-property__color-selector">
+                <div style="background-color: #ffffff"></div>
+            </div>
+        </div>
+
+        <div class="stroke-color-property property-tool__item stroke-color-property_active">
+            <span class="stroke-color-property__title">контур</span>
+            <input type="color" class="stroke-color-property__color stroke-color">
+
+        </div>
+
+        <div class="size-property property-tool__item">
+            <span>длина</span>
+            <input type="number" class="size-property__number size-width-num" min="0" value="1">
+            <span>ширина</span>
+            <input type="number" class="size-property__number size-height-num" min="0" value="1">
+        </div>
+
+        <div class="rotate-property property-tool__item">
+            <span>поворот</span>
+            <input type="number" class="rotate-property_number rotate-num" min="-360" max="360" value="0">
+            <input type="range" class="rotate-property_range rotate-ran" min="-360" max="360" value="0">
+
+        </div>
+
+        <div class="bargello-property property-tool__item">
+            <span>Количество строк</span>
+            <input type="number" class="bargello-property_cnt-row " min="0" max="30" value="5">
+            <span>Количество колонок</span>
+            <input type="number" class="bargello-property_cnt-col " min="0" max="30" value="5">
+            <span>Ширина колонки</span>
+            <input type="number" class="bargello-property_size-col " min="0" max="30" value="5">
+
+        </div>
+
+    </div>
+    <div class="wrap-tool-canv-prop">
+        <div class="menu-tools">
+            <ul>
+                <li class="move active instrument"></li>
+                <!--<li class="pencil"></li>-->
+                <li class="line instrument" title="Линия"></li>
+                <li class="rect instrument" title="Прямоугольник"></li>
+                <li class="ellipse instrument" title="Эллипс"></li>
+                <li class="polygon instrument" title="Полигон"></li>
+                <li class="fill instrument" title="Заливка"></li>
+                <!--<li class="pip instrument" title="Пипетка"></li>-->
+                <!--<li class="loop instrument" title="Лупа"></li>-->
+                <li class="template instrument" title="Шаблоны фигур">
+                    <div class="template-panel">
+                        <ul class="template-menu">
+                            <li class="fig-type simple active">
+                                <a href="#">Простые</a>
+                            </li>
+                            <li class="fig-type intr">
+                                <a href="#">Интересные</a>
+                            </li>
+                            <li class="fig-type diff">
+                                <a href="#">Сложные</a>
+                            </li>
+                        </ul>
+                        <div class="list-fig simple">
+                            <div class="fig-1 figure"></div>
+                            <div class="fig-2 figure"></div>
+                            <div class="fig-3 figure"></div>
+                            <div class="fig-4 figure"></div>
+                            <div class="fig-5 figure"></div>
+                            <div class="fig-6 figure"></div>
+                            <div class="fig-7 figure"></div>
+                        </div>
+                        <div class="list-fig intr">
+                            <div class="fig-1 figure"></div>
+                            <div class="fig-2 figure"></div>
+                            <div class="fig-3 figure"></div>
+                            <div class="fig-4 figure"></div>
+                            <div class="fig-5 figure"></div>
+                        </div>
+                        <div class="list-fig diff">
+                            <div class="fig-1 figure"></div>
+                            <div class="fig-2 figure"></div>
+                            <div class="fig-3 figure"></div>
+                            <div class="fig-4 figure"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="main-canvas">
+            <!--<svg id="root-svg">-->
+            <!--<div id="child-svg"></div>-->
+            <!--</svg>-->
+        </div>
+
+
+        <div class="property-canvas">
+            <div class="size-canvas">
+                <div class="size-canvas__item canvas-height">
+                    <span>Высота поля</span>
+                    <input class="canvas-height__number" type="number">
+                    <input class="canvas-height__range" type="range" min="1" max="100">
+                </div>
+                <div class="size-canvas__item canvas-width">
+                    <span>Длина поля</span>
+                    <input class="canvas-width__number" type="number">
+                    <input class="canvas-width__range" type="range" min="1" max="100" >
+                </div>
+
+            </div>
+
+            <div class="figure-align">
+                <div class="align-position tl">
+                    <div></div>
+                </div>
+                <div class="align-position tc">
+                    <div></div>
+                </div>
+                <div class="align-position tr">
+                    <div></div>
+                </div>
+                <div class="align-position cl">
+                    <div></div>
+                </div>
+                <div class="align-position cc">
+                    <div></div>
+                </div>
+                <div class="align-position cr">
+                    <div></div>
+                </div>
+                <div class="align-position bl">
+                    <div></div>
+                </div>
+                <div class="align-position bc">
+                    <div></div>
+                </div>
+                <div class="align-position br">
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="groups">
+                <span class="groups__title">Слои</span>
+                <div class="groups__property layer-button">
+                    <div class="layer-button__new"></div>
+                    <div class="layer-button__delete"></div>
+                </div>
+                <div class="groups__layer layer">
+                    <div class="layer__item layer__item_rect layer-full">
+                        <div class="layer-full__visible layer-full__visible_active"></div>
+                        <div>
+                            <div class="layer-full__img"></div>
+                            <div class="layer-full__title">Название</div>
+                        </div>
+
+                    </div>
+
+                    <div class="layer__item layer__item_rect layer-full">
+                        <div class="layer-full__visible"></div>
+                        <div>
+                            <div class="layer-full__img"></div>
+                            <div class="layer-full__title">Название</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="color-obj"></div>
+
+</div>
+
+<div class="rbm-menu">
+    <ul>
+        <li class="rbm-menu__item" onclick="cutFigure()"><span>Вырезать</span><span>Ctrl+C</span></li>
+        <li class="rbm-menu__item" onclick="copyElement()"><span>Копировать</span> <span>Ctrl+C</span></li>
+        <li class="rbm-menu__item" onclick="pasteElement()"><span>Вставить</span><span>Ctrl+V</span></li>
+        <li class="rbm-menu__item" onclick="deleteFigure()"><span>Удалить</span><span>Delete</span></li>
+    </ul>
+</div>
+
+
+<div id="parent_popup_click1" class="modal" onclick="document.getElementById('parent_popup_click1').style.display='none';">
+    <div class="reference">
+        <a class="reference__close" title="Закрыть" onclick="document.getElementById('parent_popup_click1').style.display='none';">×</a>
+        <h2>Помощь для работы с приложением</h2>
+        <p>Данное веб приложение проможет в расчете материалов для вашей работы. Будь то ...</p>
+    </div>
+</div>
+
+
+<div class="hover"></div>
+
+<script src="js/main.js"></script>
+<script src="js/controls.js"></script>
+
+<script>
+    function runOnKeys() {
+        var pressed = {};
+
+        document.onkeydown = function(e) {
+            e = e || window.event;
+
+            pressed[e.keyCode] = true;
+
+            var codesCopy = [17,67];
+            var codesPaste = [17,86];
+            var copy = false, paste = false;
+            if (pressed[codesCopy[0]] && pressed[codesCopy[1]]){
+                copy = true;
+            }
+            if (pressed[codesPaste[0]] && pressed[codesPaste[1]]){
+                paste = true;
+            }
+            if (!paste && !copy)
+                return;
+
+            pressed = {};
+            if (copy)
+                copyElement();
+            if (paste)
+                pasteElement();
+        };
+
+        document.onkeyup = function(e) {
+            e = e || window.event;
+
+            delete pressed[e.keyCode];
+        };
+    }
+
+
+    runOnKeys();
+
+
+</script>
+
+</body>
+</html>

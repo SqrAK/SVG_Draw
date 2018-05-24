@@ -1,0 +1,42 @@
+.template-panel .figure{
+    width: 42px;
+    height: 42px;
+    /*margin: 5px;*/
+    background-image: url("../img/simple-fig-icons.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    /*background-color: gray;*/
+}
+.template-panel .figure:hover{
+    /*background-color: #555555;*/
+    background-color: #999999;
+}
+.template-panel .simple .figure{
+    background-image: url("../img/simple-fig-icons.png");
+}
+
+.simple .fig-1{
+    background-position: 0 0;
+}
+
+.simple .fig-2{
+    background-position: -42px 0;
+}
+.simple .fig-3{
+    background-position: -84px 0;
+}
+.simple .fig-4{
+    background-position: -126px 0;
+}
+.simple .fig-5{
+    background-position: -168px 0;
+}
+.simple .fig-6{
+    background-position: -210px 0;
+}
+.simple .fig-7{
+    background-position: -252px 0;
+}
+.simple .fig-8{
+    background-position: -294px 0;
+}

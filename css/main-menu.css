@@ -1,0 +1,49 @@
+/*Главное меню*/
+.menu-strip {
+    font-size: 14px;
+    width: 100%;
+    background: #666666;
+    color: #ffffff;
+    padding-left: 48px;
+}
+
+.main-menu-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.main-menu-list__item {
+    height: 30px;
+    display: block;
+    padding: 5px;
+    cursor: pointer;
+    position: relative;
+}
+
+.main-menu-list__item:hover {
+    background: #999999;
+}
+
+.nested-menu {
+    width: auto;
+    background: #ffffff;
+    color: #000000;
+    position: absolute;
+    left: 0;
+    top: 30px;
+    /*display: flex;*/
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    display: none;
+}
+
+.nested-menu__item {
+    padding: 7px;
+
+}
+.nested-menu__item:hover{
+    background: #999999;
+}
